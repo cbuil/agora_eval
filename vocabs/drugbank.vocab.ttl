@@ -1,0 +1,98 @@
+@prefix atcs: <http://bio2rdf.org/atc_vocabulary:> .
+@prefix hgnc: <http://bio2rdf.org/hgnc_vocabulary:> .
+@prefix taxonomy: <http://bio2rdf.org/taxonomy_vocabulary:> .
+@prefix uniprot: <http://bio2rdf.org/uniprot_vocabulary:> .
+@prefix genbank: <http://bio2rdf.org/genbank_vocabulary:> .
+@prefix pharmgkb: <http://bio2rdf.org/pharmgkb_vocabulary:> .
+@prefix bank: <http://examples.org/bank#> .
+@prefix bio2rdf: <http://bio2rdf.org/bio2rdf_vocabulary:> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix drugs: <http://bio2rdf.org/drugbank_vocabulary:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://examples.org/bank> a owl:Ontology .
+
+bank:Service a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty bank:hasResource ;
+            owl:someValuesFrom drugs:Drug ] .
+
+atcs:Resource a owl:Class ;
+    rdfs:subClassOf drugs:Resource .
+
+drugs:Brand a owl:Class ;
+    rdfs:subClassOf drugs:Resource .
+
+drugs:Category a owl:Class ;
+    rdfs:subClassOf drugs:Resource .
+
+drugs:Dosage a owl:Class ;
+    rdfs:subClassOf drugs:Resource .
+
+drugs:Target a owl:Class ;
+    rdfs:subClassOf drugs:Resource .
+
+drugs:Drug a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty drugs:brand ;
+            owl:someValuesFrom drugs:Brand ],
+        [ a owl:Restriction ;
+            owl:onProperty drugs:x-atc ;
+            owl:someValuesFrom atcs:Resource ],
+        [ a owl:Restriction ;
+            owl:onProperty drugs:x-genbank ;
+            owl:someValuesFrom genbank:Resource ],
+        [ a owl:Restriction ;
+            owl:onProperty drugs:x-pharmgkb ;
+            owl:someValuesFrom pharmgkb:Resource ],
+        [ a owl:Restriction ;
+            owl:onProperty drugs:x-uniprot ;
+            owl:someValuesFrom uniprot:Resource ],
+        [ a owl:Restriction ;
+            owl:onProperty drugs:x-taxonomy ;
+            owl:someValuesFrom taxonomy:Resource ],
+        [ a owl:Restriction ;
+            owl:onProperty drugs:x-hgnc ;
+            owl:someValuesFrom hgnc:Resource ],
+        drugs:Resource .
+
+drugs:brand a owl:ObjectProperty .
+
+drugs:x-atc a owl:ObjectProperty .
+
+drugs:target a owl:ObjectProperty .
+
+drugs:dosage a owl:ObjectProperty .
+
+drugs:category a owl:ObjectProperty .
+
+drugs:x-genbank a owl:ObjectProperty .
+
+drugs:x-pharmgkb a owl:ObjectProperty .
+
+drugs:x-uniprot a owl:ObjectProperty .
+
+drugs:x-taxonomy a owl:ObjectProperty .
+
+drugs:x-hgnc a owl:ObjectProperty .
+
+bank:hasResource a owl:ObjectProperty .
+
+drugs:Resource a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onDataRange xsd:string ;
+            owl:onProperty dcterms:identifier ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onDataRange xsd:string ;
+            owl:onProperty dcterms:title ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onDataRange xsd:string ;
+            owl:onProperty bio2rdf:namespace ] .
