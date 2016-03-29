@@ -1,0 +1,58 @@
+taxonomy:
+  hostname: taxonomy
+  domainname: localdomain
+  image: fserena/rdf2rest
+  volumes:
+    - ./:/data
+  ports:
+    - "5001:5001"
+  environment:
+    - CREATE_PARTITION=false
+    - LOAD_SOURCE=false
+    - AGORA_HOST=200.1.19.244
+    - AGORA_PORT=9002
+    - FORCE_HOST=200.1.19.244
+    - SOURCE_FILE=/data/drugbank.nq.ttl
+    - SOURCE_GRAPH_STORE=/data/source
+    - PARTITION_GRAPH_STORE=/data/taxonomy
+    - PARTITION_FILE=/data/taxonomy.ttl
+    - PARTITION_LIMIT=10000
+    - SERVICE_VOCABULARY_ID=bank
+    - SERVICE_VOCABULARY_URL=/data/ontology.ttl
+    - LINK_PARTITION_URI=http://bio2rdf.org/drugbank_vocabulary:x-taxonomy
+    - 'IGNORE_LINKS=["http://rdfs.org/ns/void#inDataset"]'
+    - URI_PREFIX=http://bio2rdf.org/
+    - SERVICE_TYPE_URI=http://examples.org/bank#Service
+    - CONTAINMENT_LINK_URI=http://examples.org/bank#hasResource
+    - 'NAMESPACES={"taxonomy": "http://bio2rdf.org/taxonomy_vocabulary:", "drugs": "http://bio2rdf.org/drugbank_vocabulary:", "bio2rdf": "http://bio2rdf.org/bio2rdf_vocabulary:", "void": "http://rdfs.org/ns/void#", "bank": "http://examples.org/bank#" }'
+
+drugbank:
+  hostname: drugbank
+  domainname: localdomain
+  image: fserena/rdf2rest
+  volumes:
+    - ./:/data
+  ports:
+    - "5002:5002"
+  environment:
+    - CREATE_PARTITION=false
+    - LOAD_SOURCE=false
+    - AGORA_HOST=200.1.19.244
+    - API_PORT=5002
+    - AGORA_PORT=9002
+    - FORCE_HOST=200.1.19.244
+    - SOURCE_FILE=/data/drugbank.nq.ttl
+    - SOURCE_GRAPH_STORE=/data/source
+    - PARTITION_GRAPH_STORE=/data/drugbank
+    - PARTITION_FILE=/data/drugbank.ttl
+    - PARTITION_LIMIT=100
+    - SERVICE_VOCABULARY_ID=bank
+    - SERVICE_VOCABULARY_URL=/data/drugbank.vocabulary.ttl
+    - TYPE_PARTITION_URI=http://bio2rdf.org/drugbank_vocabulary:Drug
+    - 'IGNORE_LINKS=["http://rdfs.org/ns/void#inDataset"]'
+    - URI_PREFIX=http://bio2rdf.org/
+    - SERVICE_TYPE_URI=http://examples.org/bank#Service
+    - CONTAINMENT_LINK_URI=http://examples.org/bank#hasResource
+    - 'NAMESPACES={"drugs": "http://bio2rdf.org/drugbank_vocabulary:", "bio2rdf": "http://bio2rdf.org/bio2rdf_vocabulary:", "void": "http://rdfs.org/ns/void#", "bank": "http://examples.org/bank#" }'
+    - 'SERVICE_LINKS={"http://bio2rdf.org/drugbank_vocabulary:x-taxonomy": "http://10.10.15.27:5001/"}'
+
